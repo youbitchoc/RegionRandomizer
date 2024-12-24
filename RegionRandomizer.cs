@@ -83,8 +83,6 @@ public partial class RegionRandomizer : BaseUnityPlugin
     /*
      * TODO Notes:
      * 
-     * Check that gate locks are accurate (and not 1 off)
-     * 
      * Add a "hard" option that changes the region pathing. Instead of setting echoes in the same method as finding regions,
      * go through one gate at a time (like a player would). This will require player progression to be more linear.
      * 
