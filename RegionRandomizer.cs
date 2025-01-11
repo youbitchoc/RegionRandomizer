@@ -20,6 +20,7 @@ namespace RegionRandomizer;
 
 [BepInDependency("rwmodding.coreorg.rk", BepInDependency.DependencyFlags.HardDependency)]
 [BepInDependency("LazyCowboy.KarmaExpansion", BepInDependency.DependencyFlags.SoftDependency)]
+[BepInDependency("henpemaz.rainmeadow", BepInDependency.DependencyFlags.SoftDependency)]
 
 [BepInPlugin("LazyCowboy.RegionRandomizer", "Region Randomizer", "1.2.1")]
 public partial class RegionRandomizer : BaseUnityPlugin
@@ -155,7 +156,10 @@ public partial class RegionRandomizer : BaseUnityPlugin
                 if (mod.id == "LazyCowboy.KarmaExpansion")
                 {
                     KarmaCap = 22;
-                    break;
+                }
+                if (mod.id == "henpemaz.rainmeadow")
+                {
+                    meadowEnabled = true;
                 }
             }
 

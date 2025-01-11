@@ -1,12 +1,14 @@
 using RainMeadow;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RegionRandomizer;
 
 public partial class RegionRandomizer
 {
-	public static bool IsOnline => OnlineManager.lobby != null;
+	public static bool meadowEnabled = false;
+	public static bool IsOnline => meadowEnabled && OnlineManager.lobby != null;
 	public static bool IsHost => OnlineManager.lobby.isOwner;
 
 	public static RandomizerData onlineData = new();
@@ -30,8 +32,12 @@ public partial class RegionRandomizer
 		{
 			public override Type GetDataType() => GetType();
 
-			[OnlineField(nullable = true)]
-			Dictionary<string, string> CustomGateLocks;
+			//[OnlineField(nullable = true)]
+			//Dictionary<string, string> CustomGateLocks;
+			[OnlineField]
+			string[] CustomGateLocksKeys;
+			[OnlineField]
+			string[] CustomGateLocksValues;
 			[OnlineField]
 			string[] GateNames;
 			[OnlineField]
@@ -42,7 +48,8 @@ public partial class RegionRandomizer
 			public State() { }
 			public State(RandomizerData data)
 			{
-				CustomGateLocks = RegionRandomizer.CustomGateLocks;
+				CustomGateLocksKeys = RegionRandomizer.CustomGateLocks.Keys.ToArray();
+				CustomGateLocksValues = RegionRandomizer.CustomGateLocks.Values.ToArray();
 				GateNames = RegionRandomizer.GateNames;
 				NewGates1 = RegionRandomizer.NewGates1;
 				NewGates2 = RegionRandomizer.NewGates2;
@@ -50,7 +57,7 @@ public partial class RegionRandomizer
 
 			public override void ReadTo(OnlineResource.ResourceData data, OnlineResource resource)
 			{
-				RegionRandomizer.CustomGateLocks = CustomGateLocks;
+				RegionRandomizer.CustomGateLocks = CustomGateLocksKeys.Zip(CustomGateLocksValues, (k, v) => (k, v)).ToDictionary(x => x.k, x => x.v);
 				RegionRandomizer.GateNames = GateNames;
 				RegionRandomizer.NewGates1 = NewGates1;
 				RegionRandomizer.NewGates2 = NewGates2;
