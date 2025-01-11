@@ -1455,6 +1455,16 @@ public partial class RegionRandomizer : BaseUnityPlugin
 
     private static void InitiateGame(string slugcat, bool expedition = false)
     {
+        if (IsOnline && !IsHost)
+        {
+            // host will tell us
+            Debug.Log($"CustomGateLocks: [ {string.Join(", ", CustomGateLocks.Select((key, value) => $"\"{key}\": \"{value}\""))} ]");
+            Debug.Log($"GateNames: [ {string.Join(", ", GateNames)} ]");
+            Debug.Log($"NewGates1: [ {string.Join(", ", NewGates1)} ]");
+            Debug.Log($"NewGates2: [ {string.Join(", ", NewGates2)} ]");
+            return;
+        }
+
         addKarmaNextDeath = 0;
 
         //apply randomizer files
@@ -1503,6 +1513,11 @@ public partial class RegionRandomizer : BaseUnityPlugin
         ReadLocksFiles(slugcat);
 
         //MergeLocksFile(locksFile);
+
+        if (IsOnline && IsHost)
+        {
+            AddOnlineData();
+        }
     }
     private static void MergeLocksFile(string locksFile) {
         //merge locks file
